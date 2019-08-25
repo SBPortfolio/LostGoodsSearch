@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">LostGoodsSearch</string>
+
+    <string name="atcId">관리ID : </string>
+    <string name="lstHor">분실시간 : </string>
+    <string name="lstLctNm">분실지역명 : </string>
+    <string name="lstPlace">분실장소 : </string>
+    <string name="lstPlaceSeNm">분실장소구분명 : </string>
+    <string name="lstPrdtNm">물품명 : </string>
+    <string name="lstSbjt">게시제목 : </string>
+    <string name="lstSteNm">분실물 상태명 : </string>
+    <string name="lstYmd">분실일자 : </string>
+    <string name="orgId">기관ID : </string>
+    <string name="orgNm">기관명 : </string>
+    <string name="prdtClNm">물품분류명 : </string>
+    <string name="tel">기관전화번호 : </string>
+    <string name="uniq">특이사항 : </string>
+
+</resources>

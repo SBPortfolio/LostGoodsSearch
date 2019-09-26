@@ -32,6 +32,7 @@ import retrofit2.Response;
 
 public class SelectActivity extends AppCompatActivity {
     Spinner spinnerLocation;
+    Spinner spinnerLocationsub;
     String loadsearchkeyID;
     EditText startDate;
     EditText endDate;
@@ -74,6 +75,8 @@ public class SelectActivity extends AppCompatActivity {
                         LocationItems locationItems = (LocationItems) parent.getItemAtPosition(position);
                         loadsearchkeyID = (String) locationItems.getCdNm();
                         cmmCd = locationItems.getCommCd();
+                        Log.d("cmmcd", "cmmcd : " + cmmCd);
+                        setCmmcd(cmmCd);
                     }
 
                     @Override
@@ -142,6 +145,51 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void setCmmcd (final String getCmmCd){
+        spinnerLocationsub = findViewById(R.id.spinnerLocationSub);
+        RetrofitService retrofitService = RetrofitClient.getRetroService();
+        Call<LocationResponse> call = retrofitService.getLocationList(Utils.SERVICE_KEY, Utils.CD_VALUE);
+        call.enqueue(new Callback<LocationResponse>() {
+            @Override
+            public void onResponse(Call<LocationResponse> call, Response<LocationResponse> response) {
+                Log.d("callback", "success");
+                List<LocationItems> items = response.body().getBody().getItems();
+                List<LocationItems> locationItemsList = new ArrayList<>();
+                String x = getCmmCd.substring(0, 3);
+                for (LocationItems vo : items) {
+                    String cd = vo.getCommCd();
+                    if (cd.length() >= 6 && cd.substring(0, 3).equals(x) && !cd.equals(getCmmCd)) {
+                        locationItemsList.add(vo);
+                    }
+                }
+                ArrayAdapter<LocationItems> arrayAdapter = new ArrayAdapter<LocationItems>(SelectActivity.this, R.layout.support_simple_spinner_dropdown_item, locationItemsList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerLocationsub.setAdapter(arrayAdapter);
+                spinnerLocationsub.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        LocationItems locationItems = (LocationItems) parent.getItemAtPosition(position);
+                        loadsearchkeyID = (String) locationItems.getCdNm();
+                        cmmCd = locationItems.getCommCd();
+                        Log.d("sub", "cmmcd sub : " + cmmCd);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<LocationResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     public void searchClk(View view) {
         Intent intent = new Intent(SelectActivity.this, LostGoodsActivity.class);
